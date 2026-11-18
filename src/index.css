@@ -1,23 +1,41 @@
 @import 'tailwindcss';
 
-/* Estilos globais mínimos. Use as classes utilitárias do Tailwind nos componentes. */
-:root {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  html {
+    scroll-behavior: smooth; /* Rolagem suave */
+    /* Melhora a renderização e nitidez das fontes em diferentes navegadores: */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-slate-50
+    text-slate-800 min-h-screen
+    selection:bg-indigo-100
+    selection:text-indigo-900;
+  }
+
+  /* Melhora a navegação pelo teclado: */
+  button:focus-visible,
+  input:focus-visible {
+    @apply outline-2 outline-offset-2
+    outline-indigo-600;
+  }
+}
+/* Animação para a entrada de um item de tarefa */
+@keyframes taskEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-body {
-  min-width: 320px;
-  min-height: 100vh;
-  margin: 0;
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
+.animate-task-enter {
+  /* Aplica a animação taskEnter com duração de 0.22 segundos,
+  * suavização ease-out e mantém o estado final da animação */
+  animation: taskEnter 0.22s ease-out forwards;
 }
