@@ -1,26 +1,71 @@
-/**
- * Ponto de entrada visual da aplicação.
- *
- * Este é apenas um conteúdo inicial para verificar React e Tailwind CSS.
- * Implemente aqui (ou em componentes separados) as funcionalidades do desafio.
- */
-function App() {
+import { useState } from 'react'
+import { useTarefas } from './useTasks.js'
+import { Cabecalho } from './Cabecalho.jsx'
+import { FormularioTarefa } from './FormularioTarefa.jsx'
+import { FiltrosTarefa } from './FiltrosTarefas.jsx'
+import { ListaTarefas } from './ListaTarefas.jsx'
+
+export function App() {
+  // Estado que controla o filtro de visualização ativo na tela
+  const [filtroAtual, setFiltroAtual] = useState('todas')
+
+  // Obtém os dados e ações do hook personalizado de tarefas
+  const {
+    tarefas,
+    totalTarefas,
+    tarefasConcluidas,
+    adicionarTarefa,
+    alternarTarefa,
+    editarTarefa,
+    removerTarefa,
+    limparConcluidas,
+  } = useTarefas()
+
+  // Filtra as tarefas exibidas de acordo com a aba selecionada
+  const tarefasFiltradas = tarefas.filter((tarefa) => {
+    if (filtroAtual === 'pendentes') return !tarefa.concluida
+    if (filtroAtual === 'concluidas') return tarefa.concluida
+    return true
+  })
+
   return (
-    <main className="min-h-screen bg-slate-50 px-6 py-16 text-slate-900">
-      <section className="mx-auto flex min-h-[70vh] max-w-4xl flex-col justify-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-600">
-          Antonio Adrian
-        </p>
+    <div className="min-h-screen
+    px-4
+    py-8
+    sm:py-12">
+      <main className="mx-auto w-full max-w-2xl">
+        {/* Cabeçalho com título e barra de progresso */}
+        <Cabecalho totalTarefas={totalTarefas} tarefasConcluidas={tarefasConcluidas} />
 
-        <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-          Lista de Tarefas
-        </h1>
+        {/* Formulário para criação de novas tarefas */}
+        <FormularioTarefa aoAdicionar={adicionarTarefa} />
 
-        <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-          Teste
-        </p>
-      </section>
-    </main>
+        {/* Barra de filtros por status e botão de limpar concluídas */}
+        <FiltrosTarefa
+          filtroAtual={filtroAtual}
+          aoMudarFiltro={setFiltroAtual}
+          aoLimparConcluidas={limparConcluidas}
+          tarefasConcluidas={tarefasConcluidas}
+        />
+
+        {/* Lista de tarefas filtradas ou mensagem de estado vazio */}
+        <ListaTarefas
+          tarefas={tarefasFiltradas}
+          totalTarefas={totalTarefas}
+          filtroAtual={filtroAtual}
+          aoAlternar={alternarTarefa}
+          aoEditar={editarTarefa}
+          aoRemover={removerTarefa}
+        />
+
+        {/* Rodapé discreto com dica de interação */}
+        <footer className="mt-8
+        text-center text-xs
+        text-slate-400">
+          Dica: clique duas vezes no texto de uma tarefa para editá-la.
+        </footer>
+      </main>
+    </div>
   )
 }
 
