@@ -63,6 +63,14 @@ export function App() {
         text-center text-xs
         text-slate-400">
           Dica: clique duas vezes no texto de uma tarefa para editá-la.
+          <a
+            href="https://github.com/boosetudo/To-do-list"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 block underline underline-offset-2 transition-colors hover:text-slate-600"
+          >
+            Ver repositório no GitHub
+          </a>
         </footer>
       </main>
     </div>
